@@ -19,6 +19,8 @@ async function connectDB() {
       });
   }
   cached.conn = await cached.promise;
+  await mongoose.connection.db.admin().command({ ping: 1 });
+  console.log("Pinged your deployment. You successfully connected to MongoDB!");
   return cached.conn;
 }
 
