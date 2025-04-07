@@ -1,0 +1,17 @@
+import connectDB from "@/utils/db";
+import { getAuth } from "@clerk/nextjs/server";
+import User from "@/models/User";
+import { NextResponse } from "next/server";
+export async function GET(request) {
+  try {
+    const { userId } = getAuth(request);
+    await connectDB();
+    const user = await User.findById(userId);
+    return NextResponse.json({
+      success: true,
+      cartItems: user.cartItems,
+    });
+  } catch (error) {
+    return NextResponse.json({ success: false, message: error.message });
+  }
+}
