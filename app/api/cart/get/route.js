@@ -1,4 +1,4 @@
-import connectDB from "@/utils/db";
+import connectDB from "@/config/db";
 import { getAuth } from "@clerk/nextjs/server";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
