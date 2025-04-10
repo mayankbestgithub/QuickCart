@@ -36,6 +36,8 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  paymentType: { type: String, required: true },
+  isPaid: { type: Boolean, required: true, default: false },
 });
 const Order = mongoose.models.order || mongoose.model("order", orderSchema);
 export default Order;

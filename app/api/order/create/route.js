@@ -19,19 +19,30 @@ export async function POST(request) {
     //calculate total amount
     const amount = await items.reduce(async (acc, item) => {
       const product = await Product.findById(item.product);
-      return await acc + product.offerPrice * item.quantity;
+      return (await acc) + product.offerPrice * item.quantity;
     }, 0);
 
-    await inngest.send({
-      name: "order/created",
-      data: {
-        userId,
-        address,
-        items,
-        amount: amount + Math.floor(amount * 0.02),
-        date: Date.now(),
-      },
+    // await inngest.send({
+    //   name: "order/created",
+    //   data: {
+    //     userId,
+    //     address,
+    //     items,
+    //     amount: amount + Math.floor(amount * 0.02),
+    //     date: Date.now(),
+
+    //   },
+    // });
+    // to integrate strapi...
+    await Order.create({
+      userId,
+      address,
+      items,
+      amount: amount + Math.floor(amount * 0.02),
+      date: Date.now(),
+      paymentType: "COD",
     });
+
     // clear user cart
     const user = await User.findById(userId);
     user.cartItems = {};
