@@ -1,4 +1,5 @@
 import connectDB from "@/config/db";
+import User from "@/models/User";
 import Order from "@/models/Order";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
