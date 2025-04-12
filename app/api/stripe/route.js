@@ -37,7 +37,7 @@ export async function POST(request) {
         break;
       }
       default:
-        console.log(event.type);
+        console.error(event.type);
         break;
     }
     return NextResponse.json({ received: true });
