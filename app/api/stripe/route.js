@@ -3,12 +3,12 @@ import User from "@/models/User";
 import Order from "@/models/Order";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-
+import { headers } from "next/headers";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
     const body = await request.text();
-    const sig = request.headers.get("stripe-signature");
+    const sig = (await headers()).get("stripe-signature");
     const event = stripe.webhooks.constructEvent(
       body,
       sig,
