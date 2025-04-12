@@ -7,10 +7,11 @@ import { headers } from "next/headers";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
-    const body = await request.text();
-    const sig = (await headers()).get("stripe-signature");
+    const rawBody = await request.arrayBuffer();
+    const sig = headers().get("stripe-signature");
+
     const event = stripe.webhooks.constructEvent(
-      body,
+      rawBody,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
@@ -46,7 +47,6 @@ export async function POST(request) {
     return NextResponse.json({ message: error.message });
   }
 }
-
-// export const config = {
-//   api: { bodyParser: false },
-// };
+export const config = {
+  api: { bodyParser: false },
+};
