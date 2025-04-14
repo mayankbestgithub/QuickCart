@@ -3,11 +3,11 @@ import User from "@/models/User";
 import Order from "@/models/Order";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { headers } from "next/headers";
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
-    const body = await request.text();
+    const body = await buffer(request);
     const sig = request.headers.get("stripe-signature");
 
     const event = stripe.webhooks.constructEvent(
@@ -47,6 +47,22 @@ export async function POST(request) {
     return NextResponse.json({ message: error.message });
   }
 }
-// export const config = {
-//   api: { bodyParser: false },
-// };
+
+const buffer = (request) => {
+  return new Promise()((resolve, reject) => {
+    const chunks = [];
+
+    req.on("data", (chunk) => {
+      chunks.push(chunk);
+    });
+
+    req.on("end", () => {
+      resolve(Buffer.concat(chunks));
+    });
+
+    req.on("error", reject);
+  });
+};
+export const config = {
+  api: { bodyParser: false },
+};
