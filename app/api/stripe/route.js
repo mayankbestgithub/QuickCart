@@ -7,11 +7,11 @@ import { headers } from "next/headers";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(request) {
   try {
-    const rawBody = await request.arrayBuffer();
-    const sig = headers().get("stripe-signature");
+    const body = await request.text();
+    const sig = request.headers.get("stripe-signature");
 
     const event = stripe.webhooks.constructEvent(
-      rawBody,
+      body,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
