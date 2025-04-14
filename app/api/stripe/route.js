@@ -47,6 +47,6 @@ export async function POST(request) {
     return NextResponse.json({ message: error.message });
   }
 }
-export const config = {
-  api: { bodyParser: false },
-};
+// export const config = {
+//   api: { bodyParser: false },
+// };
