@@ -10,9 +10,10 @@ export async function GET(request) {
     await connectDB();
     Address.length;
     Product.length;
-    const orders = await Order.find({ userId: userId }).populate(
-      "address items.product"
-    );
+    const orders = await Order.find({
+      userId,
+      $or: [{ paymentType: "COD" }, { paymentType: "Stripe", isPaid: true }],
+    }).populate("address items.product");
     return NextResponse.json({
       success: true,
       orders,
